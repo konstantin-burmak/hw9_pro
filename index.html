@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>homework7</title>
+    <body>
+        <script>
+            const toDoList = {
+                notes: [
+                        {
+                            status: true,
+                            name: 'breakfast',
+                            text: 'porridge, coffe'
+                        },
+                        {
+                            status: false,
+                            name: 'lunch',
+                            text: 'borsch, potato, steak'
+                        },
+                        {
+                            status: false,
+                            name: 'dinner',
+                            text: 'pasta, cacao'
+                        }
+                ],
+
+                addNewNote(newName, newText) {
+                    const notValid = this.notes.find(note => note.name === newName);
+
+                    if (!notValid) {
+                        const newNote = {
+                            status: false,
+                            name: newName,
+                            text: newText
+                        }
+                        this.notes.push(newNote)
+                    }
+                },
+
+                remove(name) {
+                    const removeIndex = this.notes.findIndex(note => note.name === name);
+
+                    if (removeIndex !== -1) {
+                        this.notes.splice(removeIndex, 1);
+                    }
+                },
+
+                edit(name, editText) {
+                    const editIndex = this.notes.find(editIndex => editIndex.name === name);
+
+                    if (editIndex) {
+                        editIndex.text = editText;
+                    }
+                },
+
+                toggleComplete(name) {
+                    const index = this.notes.findIndex(note => note.name === name);
+
+                    if (index !== -1) {
+                        this.notes[index].status = !this.notes[index].status;
+                    }
+                },
+
+                statistic() {
+                    return this.notes.reduce((acc, note) => {
+                        note.status ? acc.completed++ : acc.uncompleted++;
+
+                        return acc;
+                    }, {
+                        total: this.notes.length,
+                        completed: 0,
+                        uncompleted: 0
+                    })
+                }
+            };
+
+            for (const key in toDoList) {
+                Object.defineProperty(toDoList, key, {
+                    configurable: false
+                })
+            }
+
+            toDoList.addNewNote('night snack', 'apple, yougurt');
+            toDoList.remove('lunch');
+            toDoList.edit('dinner', 'McDonalds')
+            toDoList.toggleComplete('dinner');
+            console.log('To do List: ', toDoList.notes);
+            console.log('Statistic: ', toDoList.statistic());
+        </script>
+    </body>
+</head>
